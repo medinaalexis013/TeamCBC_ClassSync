@@ -3,7 +3,6 @@ import React from 'react'
 import './Login.css'
 
 export default function Login(props) {
-	//const [selectedGen, setSelectedGen] = useState(9);
 
     return (
 		<div className='login-page-case'>
