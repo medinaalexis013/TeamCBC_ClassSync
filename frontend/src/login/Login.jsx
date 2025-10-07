@@ -3,9 +3,8 @@ import React from 'react'
 import './Login.css'
 
 export default function Login(props) {
-
     return (
-		<div className='login-page-case'>
+		<div id='login-page-case'>
 			<img id='main-logo' src='/src/assets/MainLogo.png'></img>
             <form className='form'>
 
@@ -14,8 +13,8 @@ export default function Login(props) {
                     <div id='username-case'>
                         <img src='/src/assets/user.png'></img>
                         <input type='text' className='username' placeholder="Enter Username"></input>
-                        <div className='line'></div>
                     </div>
+                    <div className='line'></div>
                     <label>Password</label>
                     <div id='password-case'>
                         <div>
@@ -23,8 +22,8 @@ export default function Login(props) {
                             <input type='text' className='username' placeholder="Enter Password"></input>
                         </div>
                         <img className='show-password-button' src='/src/assets/ShowPass.png'></img>
-                        <div className='line'></div>
                     </div>
+                    <div className='line'></div>
                     <div style={{display: "flex", justifyContent: "flex-end", padding: "10px"}}>
                         <a href='' className='forgot-password'>Forgot Password?</a>
                     </div>

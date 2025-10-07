@@ -1,4 +1,6 @@
-.signup-page-case {
+@scope (#signup-page-case) {
+
+:scope {
     background-color: #FFFFFF;
     flex-direction: column;
     justify-content: center;
@@ -7,36 +9,31 @@
     margin-top: 20vh;
     font-family: Inter;
     font-size: .8em;
+    max-width: 500px;
 }
 
 .form {
-  width: 80%
-}
-
-.signup-box.css {
-    display: flex;
-    justify-content: space-between;
+  width: 90%
 }
 
 .name-container {
     display: flex;
+    justify-content: space-between;
     padding-top: 20px;
     padding-bottom: 15px;
 }
 
 .small-line {
-    width: 30%;
+    width: 70%;
     border-bottom: 1px solid black;
-    position: absolute;
     z-index: 0;
 }
 
 .signup-box {
     background-color: #D9D9D9;
-    width: 100%;
     display: flex;
     border-radius: 1px;
-    padding: 10px;
+    padding: 20px;
     padding-top: 20px;
     padding-bottom: 20px;
     flex-direction: column;
@@ -73,6 +70,12 @@ input {
     margin-top: 5px;
 }
 
+.text-below-input {
+  color: gray;
+  opacity: .6;
+  font-style: italic;
+}
+
 input::placeholder {
   opacity: .8;
   font-style: italic;
@@ -80,14 +83,12 @@ input::placeholder {
 
 .show-password-button {
   position: relative;
-  
+  right: 10px;
 }
 
 .line {
-  width: 75%;
-  margin-top: 50px;
+  width: 95%;
   border-bottom: 1px solid black;
-  position: absolute;
   z-index: 0;
 }
 
@@ -108,4 +109,5 @@ input::placeholder {
     flex-direction: column;
     max-width: 500;
   }
+}
 }

@@ -1,16 +1,19 @@
-.login-page-case {
+@scope (#login-page-case) {
+
+:scope {
     background-color: #FFFFFF;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    display: flex;
     margin-top: 20vh;
-    font-family: Inter;
+    font-family: Inter, system-ui, sans-serif;
     font-size: .8em;
-}
+    max-width: 500px;
+  }
 
 .form {
-  width: 80%
+  width: 90%
 }
 
 .login-box {
@@ -30,7 +33,6 @@
     display: flex;
     align-items: center;
     padding: 8px;
-    margin-bottom: 25px;
 }
 
 #password-case {
@@ -62,11 +64,10 @@ input::placeholder {
 }
 
 .line {
-  width: 75%;
-  margin-top: 50px;
+  width: 95%;
   border-bottom: 1px solid black;
-  position: absolute;
   z-index: 0;
+  margin-bottom: 25px;
 }
 
 .login-button {
@@ -89,5 +90,6 @@ input::placeholder {
 
   #main-logo {
     width: 90vw   
+}
 }
 }
