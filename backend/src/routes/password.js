@@ -28,3 +28,31 @@ router.post("/forgot", async (req, res) => {
 
     return res.json({message: "If that email is registered, a password reset link has been sent."});
 });
+
+router.get("/reset/peek", (req, res) => {
+    const {token} = req.query || {};
+    if (!token) return res.status(400).json({error: "missing token"});
+
+    const result = peekToken(token);
+    if (!result.ok) return res.status(400).json({error: result.reason}); //[X]
+
+    return res.json({ ok: true});
+});
+router.post("/reset", async (req, res) => {
+    const {token, password, confirm } = req.body || {};
+    if (!token) return res.status(400).json({error: "missing token"});
+    if (!password || !confirm) return res.status(400).json({error: "missing fields"});
+    if (password !== confirm) return res.status(400).json({error: "passwords do not match"});
+    if (!strongPassword(password)) return res.status(400).json({error: "password is not strong enough"});
+
+    const used = useResetToken(token);
+    if (!used.ok) return res.status(400).json({error: used.reason}); //[X]
+
+    const user = db.users.find(u => u.id === used.userId);
+    if (!user) return res.status(400).json({error: "user not found"});
+    user.passwordHash = await bcrypt.hash(password, 12);
+
+    return res.json({message: "password has been reset"});
+});
+
+export default router;
