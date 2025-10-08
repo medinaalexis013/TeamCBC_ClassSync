@@ -1,13 +1,14 @@
 import { useState } from 'react'
-import Login from './login.jsx'
-import SignUp from './Sign-Up.jsx'
+import Login from './login/login.jsx'
+import SignUp from './sign-up/Sign-Up.jsx'
+import SignOut from './sign-out/sign-out.jsx'
+import './app.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <div id='main-case'>
-      <SignUp/>
+      <SignOut/>
     </div>
   )
 }
