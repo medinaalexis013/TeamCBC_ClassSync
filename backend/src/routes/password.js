@@ -24,7 +24,8 @@ router.post("/forgot", async (req, res) => {
     saveResetToken(token, user.id, 30); // 30 minutes TTL
 
     const resetLink = `need frontend link + DB route`;
-    const sendPasswordResetEmail(user.email, resetLink).catch(console.error);
+    await sendPasswordResetEmail(user.email, resetLink);
+
 
     return res.json({message: "If that email is registered, a password reset link has been sent."});
 });
