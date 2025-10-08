@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div id='main-case'>
-      <SignUp/>
+      <SignOut/>
     </div>
   )
 }
