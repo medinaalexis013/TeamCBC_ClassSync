@@ -2,4 +2,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(180deg, rgba(141, 184, 103, 1) 0%, rgba(82, 182, 94, 1) 100%);
+    font-family: Inter;
 }
+
+.back-arrow {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+}
+
+body {
+        margin: 0;
+    }
