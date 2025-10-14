@@ -6,8 +6,9 @@ export default function CreateReminder(props) {
 
     return (
         <div id='create-reminder-case'>
-            <img src='/src/assets/New Reminder.png'></img>
-            <span className='material-symbols-outlined back-arrow'>arrow_back</span>
+            <img src='/src/assets/arrow_left.png' className='back-arrow'></img>
+
+            <img src='/src/assets/New Reminder.png' alt='New Reminder' className='main-header-image'/>
 
             <div className='form-container'>
                 <form className='form'>
@@ -17,21 +18,21 @@ export default function CreateReminder(props) {
                     </div>
                     <div className='outlined-details-box'>
                         <label htmlFor='Details' className='outlined-label'>Details</label>
-                        <input type='text' id='Details' className='input-field textarea-field' placeholder='Add Description...' />
+                        <textarea id='Details' className='input-field textarea-field' rows='4' placeholder='Add Description...' />
                     </div>
                     <div className='date-time-container'>
                         <div className='outlined-date-box'>
                             <label htmlFor='Date' className='outlined-label'>Date</label>
-                            <input type='date' id='Date' className='input-field'/>
-                            <img src='/src/assets/calendar.png' style={{marginLeft: "10px"}}></img>
-                            <div className='icon-ellipse'></div>
+                                <input type='date' id='Date' className='input-field'/>
+                                {/*<img src='/src/assets/calendar.png' style={{marginLeft: "10px"}}></img>*/}
+                                <div className='icon-ellipse'></div>
                         </div>
 
                         <div className='outlined-time-box'>
                             <label htmlFor='Time' className='outlined-label'>Time</label>
-                            <input type='time' id='Time' className='input-field'/>
-                            <img src='/src/assets/time.png' style={{marginLeft: "10px"}}></img>
-                            <div className='icon-ellipse'></div>
+                                <input type='time' id='Time' className='input-field'/>
+                                {/*<img src='/src/assets/time.png' style={{marginLeft: "10px"}}></img>*/}
+                                <div className='icon-ellipse'></div>
                         </div>
                     </div>
                     <div style={{display: "flex", justifyContent: "center", paddingTop: "40px"}}>

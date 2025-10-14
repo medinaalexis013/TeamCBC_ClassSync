@@ -1,46 +1,42 @@
 @scope (#create-reminder-case) {
     :scope {
-        background: linear-gradient(180deg, rgba(141, 184, 103, 0.9) 0%, rgba(82, 182, 94, 0.9) 100%);
-        width: 100%;
+        position: relative;
+        width: 100vw;
         height: 100vh;
         display: flex;
         flex-direction: column;
         align-items: center;
         font-family: Signika, sans-serif;
-        max-width: 500px;
-        padding-top: 40px;
         box-sizing: border-box;
+        padding: 0;
     }
 
-    .back-arrow {
-        color: white;
-        align-self: flex-start;
-        margin=left: 20px;
-        margin-bottom: 16px;
-        font-size: 24px;
-        cursor: pointer;
+    img {
+        margin: 0;
+        padding: 0;
+    }
+
+    .main-header-image {
+        margin-top: 60px;
+        margin-bottom: 30px;
+        width: 200px;
+        max-width: 80%;
+        object-fit: contain;
     }
 
     .form-container {
-        background-color: #ffffff;
-        fill: 80%;
-        border-radius: 20px;
-        padding: 24px;
+        width: 100%;
+        max-width: 450px;
+        height: 800px;
+        background: rgba(255,255,255,0.8);
+        border-radius: 30px;
+        padding: 32px 24px;
         margin-top: 16px;
-        width: 90%;
-        max-width: 440px;
-        box-shadow: rgba(225,225,225,0.8);
+        box-sizing: border-box;
     }
 
     .form {
-        width: 90%;
-    }
-
-    .reminder-img {
-        display: block;
-        margin: 0 auto 24px;
-        width: 200px;
-        height: auto;
+        width: 100%;
     }
 
     .outlined-title-box,
@@ -58,12 +54,12 @@
 
     .input-field {
         width: 100%;
-        padding: 18px 12px 12px;
+        padding: 16px 12px;
         font-size: 16px;
-        border: 2px solid #52B65E;
-        border-radius: 0;
+        border: 3px solid #52B65E;
         outline: none;
         background-color: white;
+        box-sizing: border-box;
     }
 
     .outlined-label {
@@ -76,12 +72,6 @@
         padding: 2px 8px;
         font-weight: 600;
         z-index: 1;
-        border-radius: 0;
-        height: 20px;
-        line-height: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
 
     .date-time-container {
@@ -92,32 +82,53 @@
         width: 100%;
     }
 
-    .icon {
-        width: 20px;
-        height: 20px;
-        margin-top: 8px;
-        margin-left: 10px;
-        filter: brightness(0) saturate(100%)
+    .outlined-title-box,
+    .outlined-details-box {
+        width: 85%;
+        margin-left: auto;
+        margin-right: auto;
     }
 
-    .icon-ellipse {
-        width: 8px;
-        height: 8px;
+    .outlined-title-box {
+        margin-bottom: 90px;
+    }
+
+    .outlined-details-box {
+        margin-bottom: 90px;
+    }
+
+    .outlined-date-box,
+    .outlined-time-box { 
+        width: 45%;
+        margin-bottom: 85px;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
         background-color: #D6E9D8;
+        color: #52B65E;
         border-radius: 50%;
-        display: inline-block;
-        margin-left: 10px;
-        margin-top: 8px;
+        padding: 4px;
+        cursor: pointer;
+        /*filter: brightness(0) saturate(100%) sepia(100%) hue-rotate(85deg) saturate(600%) brightness(90%);8*/
+    }
+
+    input[type="time"]::-webkit-calendar-picker-indicator {
+        background-color: #D6E9D8;
+        color: #52B65E;
+        border-radius: 50%;
+        padding: 4px;
+        cursor: pointer;
+        /*filter: brightness(0) saturate(100%) sepia(100%) hue-rotate(85deg) saturate(600%) brightness(90%);*/
     }
 
     .create-button {
         all: unset;
         color: #FFFFFF;
         background-color: #52B65E;
-        opacity: 70%;
-        border-radius: 45px;
+        opacity: 0.8;
+        border-radius: 10px;
         width: 129px;
-        height: 35px;
+        height: 40px;
         text-align: center;
         align-items: center;
         justify-content: center;
