@@ -25,3 +25,11 @@ logs
 .DS_Store
 .vscode/
 *.swp
+
+.vs/
+venv/
+__pycache__/
+*.db
+*.pyc
+*.pyoc
+
