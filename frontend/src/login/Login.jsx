@@ -2,26 +2,59 @@ import { useState, useEffect } from 'react'
 import React from 'react'
 import './Login.css'
 
+const email_regex = /^[a-zA-Z0-9]+([._-][0-9a-zA-Z]+)*@[a-zA-Z0-9]+([.-][0-9a-zA-Z]+)*\.[a-zA-Z]{2,}$/
+
+function validate_email(value) {
+    return email_regex.test(value)
+}
+
 export default function Login(props) {
+    const [emailInputValue, setEmailInputValue] = useState('')
+    const [submitted, setSubmitted] = useState(false)
+    const [errorMsg, setErrorMsg] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
+
+    const handleChange = (event) => {
+        setEmailInputValue(event.target.value)
+    }
+
+    function handleSubmit(e) {
+    e.preventDefault()
+    const email = emailInputValue.replace(/\s/g, "");
+    if (!validate_email(email)) {
+        setErrorMsg('Invalid email address. Check for missing @ or domain.')
+    }
+    setSubmitted(true)
+    }
+
+    function handleShowPassword() {
+        if (showPassword) {
+            setShowPassword(false)
+        }
+        else {
+            setShowPassword(true)
+        }
+    } 
+
     return (
 		<div id='login-page-case'>
 			<img id='main-logo' src='/src/assets/MainLogo.png'></img>
-            <form className='form'>
-
+            <form className='form' onSubmit={handleSubmit}>
+            {submitted ? <div className='error-message'>{errorMsg}</div> : null}
                 <div className='login-box'>
                     <label>Username</label>
                     <div id='username-case'>
                         <img src='/src/assets/user.png'></img>
-                        <input type='text' className='username' placeholder="Enter Username"></input>
+                        <input value = {emailInputValue} onChange={handleChange} type='text' className='username' placeholder="Enter Username"></input>
                     </div>
                     <div className='line'></div>
                     <label>Password</label>
                     <div id='password-case'>
-                        <div>
+                        <div style={{display: "flex", alignItems: "center"}}>
                             <img className='lock' src='/src/assets/Lock.png'></img>
-                            <input type='text' className='username' placeholder="Enter Password"></input>
+                            <input type={showPassword ? "text" : "password"} className='username' placeholder="Enter Password"></input>
                         </div>
-                        <img className='show-password-button' src='/src/assets/ShowPass.png'></img>
+                        <img className='show-password-button' onClick={handleShowPassword} src='/src/assets/ShowPass.png'></img>
                     </div>
                     <div className='line'></div>
                     <div style={{display: "flex", justifyContent: "flex-end", padding: "10px"}}>
@@ -30,7 +63,7 @@ export default function Login(props) {
                 </div>
 
                 <div style={{display: "flex", justifyContent: "center", paddingTop: "40px"}}>
-                    <button className='login-button'>Log In</button>
+                    <button onClick={validate_email} className='login-button'>Log In</button>
                 </div>
 
                 <div style={{display: "flex", justifyContent: "center", paddingTop: "100px"}}>
