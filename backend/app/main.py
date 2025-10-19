@@ -15,3 +15,7 @@ app.include_router(auth_routes.router)
 @app.get("/protected")
 def protected_route(current_user=Depends(get_current_user)):
     return {"message": f"Welcome, {current_user.email}! You have access."}
+
+@app.get("/")
+def root():
+    return {"message": "Hello from FastAPI!"}
