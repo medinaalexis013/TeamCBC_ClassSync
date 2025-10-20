@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div id='main-case'>
-      <Settings/>
+      <Login/>
     </div>
   )
 }
