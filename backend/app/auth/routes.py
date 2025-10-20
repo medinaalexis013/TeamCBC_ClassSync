@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.auth import utils, models, schemas
-from datetime import timedelta
 from app.database import get_db
 from ..schemas import ChangePassword
 from ..dependencies import get_current_user
@@ -15,10 +14,24 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
 
     hashed_pw = utils.hash_password(user.password)
-    new_user = models.User(email=user.email, hashed_password=hashed_pw)
+    
+    # Generate email verification token
+    token = secrets.token_urlsafe(32)
+    expiration = datetime.utcnow() + timedelta(hours=1)
+
+    new_user = models.User(
+        email=user.email,
+        hashed_password=hashed_pw,
+        verification_token=token,
+        token_expiration=expiration,
+        is_verified=False
+    )
+
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+
+    return {"message": "User created. Please check your email to verify your account."}
 
     token = utils.create_token({"sub": user.email})
     return {"access_token": token, "token_type": "bearer"}
