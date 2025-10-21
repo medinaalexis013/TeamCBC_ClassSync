@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import React from 'react'
 import './Login.css'
+import { supabase } from '../lib/supabaseClient'
 
 const email_regex = /^[a-zA-Z0-9]+([._-][0-9a-zA-Z]+)*@[a-zA-Z0-9]+([.-][0-9a-zA-Z]+)*\.[a-zA-Z]{2,}$/
 
@@ -10,21 +11,40 @@ function validate_email(value) {
 
 export default function Login(props) {
     const [emailInputValue, setEmailInputValue] = useState('')
-    const [submitted, setSubmitted] = useState(false)
     const [errorMsg, setErrorMsg] = useState('')
     const [showPassword, setShowPassword] = useState(false)
+    const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState('')
 
     const handleChange = (event) => {
-        setEmailInputValue(event.target.value)
+        if (event.target.className == "username") {
+            setEmailInputValue(event.target.value)
+        }
+        else {
+            setPassword(event.target.value)
+        }
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
     e.preventDefault()
-    const email = emailInputValue.replace(/\s/g, "");
+    const email = emailInputValue.trim();
     if (!validate_email(email)) {
         setErrorMsg('Invalid email address. Check for missing @ or domain.')
+        return
     }
-    setSubmitted(true)
+    if (!password) {
+        setErrorMsg('Please enter your password.')
+        return
+    }
+
+    setLoading(true)
+    setErrorMsg('')
+    const { data, error } = await supabase.auth.signInWithPassword({email, password})
+    setLoading(false)
+    if (error) {
+        setErrorMsg(error.message || 'Login failed. Please try again.')
+        return
+    }
     }
 
     function handleShowPassword() {
@@ -40,19 +60,19 @@ export default function Login(props) {
 		<div id='login-page-case'>
 			<img id='main-logo' src='/src/assets/MainLogo.png'></img>
             <form className='form' onSubmit={handleSubmit}>
-            {submitted ? <div className='error-message'>{errorMsg}</div> : null}
+            {errorMsg ? <div className='error-message'>{errorMsg}</div> : null}
                 <div className='login-box'>
                     <label>Username</label>
                     <div id='username-case'>
                         <img src='/src/assets/user.png'></img>
-                        <input value = {emailInputValue} onChange={handleChange} type='text' className='username' placeholder="Enter Username"></input>
+                        <input value={emailInputValue} onChange={handleChange} type='text' className='username' placeholder="Enter Username"></input>
                     </div>
                     <div className='line'></div>
                     <label>Password</label>
                     <div id='password-case'>
                         <div style={{display: "flex", alignItems: "center"}}>
                             <img className='lock' src='/src/assets/Lock.png'></img>
-                            <input type={showPassword ? "text" : "password"} className='username' placeholder="Enter Password"></input>
+                            <input value={password} onChange={handleChange} type={showPassword ? "text" : "password"} className='password' placeholder="Enter Password"></input>
                         </div>
                         <img className='show-password-button' onClick={handleShowPassword} src='/src/assets/ShowPass.png'></img>
                     </div>
