@@ -1,0 +1,99 @@
+@scope (#notifications-case) {
+    :scope {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        padding: 0;
+        padding-bottom: 60px;
+    }
+
+    .notifs-header-image {
+        margin-top: 80px;
+        margin-bottom: 30px;
+        width: 350px;
+        position: absolute;
+        left: 18px;
+    }
+
+    .notifs-container {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .buttons-row {
+        display: flex;
+        align-items: center;
+        margin-top: 150px;
+        width: 100%;
+        justify-content: space-between;
+        padding: 0 18px;
+        box-sizing: border-box;
+    }
+
+    .buttons-filter {
+        display: flex;
+        gap: 10px;
+        margin-left: 25px;
+    }
+
+    .button-filter-all {
+        all: unset;
+        color: #FFFFFF;
+        background-color: #A3DDA3;
+        opacity: 70%;
+        border-radius: 45px;
+        width: 55px;
+        height: 40px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .button-filter-unread {
+        border: none;
+        outline: none;
+        background: none;
+        color: #FFFFFF;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    .mark-read-button {
+        border: none;
+        outline: none;
+        background: none;
+        color: #FFFFFF;
+        font-size: 15px;
+        margin-right: 40px;
+        cursor: pointer;
+    }
+
+    .line {
+        width: 100%;
+        border-bottom: 1px solid black;
+        margin: 15px 0;
+    }
+
+    .no-notifs {
+        text-align: center;
+        color: #FFFFFF;
+        font-size: 30px;
+    }
+
+    .add-notif-container {
+        position: absolute;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        bottom: 70px;
+    }
+
+    .add-reminder-button {
+        width: 80px;
+        height: 80px;
+        cursor: pointer
+    }
+}
