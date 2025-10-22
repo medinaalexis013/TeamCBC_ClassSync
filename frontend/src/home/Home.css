@@ -1,0 +1,98 @@
+@scope (#home-container) {
+    :scope {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: Signika, sans-serif;
+        box-sizing: border-box;
+        padding: 0;
+    }
+
+    .notifs-button {
+        position: absolute;
+        right: 20px;
+        top: 15px;
+    }
+
+    .home-header-img {
+        margin-top: 80px;
+    }
+
+    .progress-bar-container {
+        margin-top: 40px;
+        text-align: center;
+        color: white;
+    }
+
+    .progress-bar {
+        background: #ccc;
+        height: 20px;
+        width: 50vw;
+        border-radius: 20px;
+        position: relative;
+        margin: 10px auto;
+    }
+
+    .track-progress {
+        height: 100%;
+        border-radius: 20px;
+        background: #E0E0E0;
+        overflow: hidden;
+    }
+
+    .fill-progress {
+        background: linear-gradient(#A6CDF2, #6994FF);
+    }
+
+    .reminders-container {
+        background: rgba(225, 225, 225, 0.1);
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 20px;
+        width: 40%;
+        height: 20%;
+    }
+
+    .reminder-row {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        gap: 50px;
+    }
+
+    .schedule-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 5px;
+    }
+
+    .view-schedule {
+        margin-top: 40px;
+        right: 100px;
+    }
+
+    .row-weekdays {
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+        color: white;
+        font-size: 20px;
+    }
+
+    .date-container {
+        background: rgba(225, 225, 225, 0.1);
+        padding: 15px;
+        border-radius: 20px;
+    }
+    
+    .date-box.selected {
+        background-color:
+    }
+}
