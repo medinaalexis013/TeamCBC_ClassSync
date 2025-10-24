@@ -1,11 +1,22 @@
+<<<<<<< HEAD
 import { useState, useEffect } from 'react'
+=======
+import { useState } from 'react'
+>>>>>>> c8a68fbdcb95f4579aa331414e5530b3118aba4e
 import Login from './login/Login.jsx'
 import SignUp from './sign-up/Sign-Up.jsx'
 import SignOut from './sign-out/sign-out.jsx'
 import CreateReminder  from './create-reminder/Create-Reminder.jsx'
 import Settings from './settings/settings.jsx'
+<<<<<<< HEAD
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ProtectedRoute from './protected-route.jsx'
+=======
+import Profile from './Profile/profile.jsx'
+import Home from './home/Home.jsx'
+import Notifications from './Notifications/notifications.jsx'
+import NavBar from './components/NavBar/navbar.jsx'
+>>>>>>> c8a68fbdcb95f4579aa331414e5530b3118aba4e
 
 import './app.css'
 
