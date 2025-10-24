@@ -1,14 +1,18 @@
-# app/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.auth import routes as auth_routes
+from app.database import Base, engine
 
-from app.test_routes import router as test_router
-# (leave your other imports commented out while in migration mode)
+# Create tables in your Supabase Postgres if they don't exist
+Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="TeamCBC Backend API (Supabase migration mode)")
+app = FastAPI(title="ClassSync Backend API (Supabase)")
 
-# Allow your frontend during dev; add more origins as needed
-origins = ["http://localhost:3000"]
+# Allow your frontend (add more origins if needed)
+origins = [
+    "http://localhost:3000",   # local React dev server
+    "https://your-frontend-domain.com"  # production domain (once deployed)
+]
 
 app.add_middleware(
     CORSMiddleware,
@@ -18,18 +22,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount test routes AFTER app is created
-app.include_router(test_router, prefix="/test", tags=["test"])
-
-# Keep legacy bits disabled during migration
-# from app.auth.models import Base
-# from app.database import engine
-# @app.on_event("startup")
-# def startup():
-#     Base.metadata.create_all(bind=engine)
-# from app.auth import routes as auth_routes
-# app.include_router(auth_routes.router)
+# Mount routes
+app.include_router(auth_routes.router)
 
 @app.get("/")
-def health():
-    return {"ok": True, "mode": "supabase-migration"}
+def health_check():
+    return {"status": "ok", "service": "backend", "database": "supabase"}

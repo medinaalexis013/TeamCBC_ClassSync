@@ -1,29 +1,25 @@
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
-from app.auth.utils import SECRET_KEY, ALGORITHM
-from app.auth.models import User
-from app.database import SessionLocal
+from fastapi import Depends, HTTPException, Header, status
+from app.auth.utils import supabase
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
-
-def get_current_user(token: str = Depends(oauth2_scheme)):
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        email: str = payload.get("sub")
-        if email is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid authentication credentials",
-            )
-    except JWTError:
+def get_current_user(Authorization: str = Header(...)):
+    """
+    Extracts the Supabase access token from the Authorization header,
+    verifies it with Supabase, and returns the authenticated user.
+    """
+    if not Authorization.startswith("Bearer "):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication token",
+            detail="Missing or invalid Authorization header"
         )
 
-    db = SessionLocal()
-    user = db.query(User).filter(User.email == email).first()
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user
+    token = Authorization.split(" ")[1]
+    try:
+        user = supabase.auth.get_user(token)
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid or expired token"
+            )
+        return user.user
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(e))
