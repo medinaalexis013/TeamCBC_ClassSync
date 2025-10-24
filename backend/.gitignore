@@ -1,0 +1,6 @@
+.env
+create_db.py
+.venv/
+.venv312/
+__pycache__/
+*.pyc

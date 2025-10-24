@@ -2,8 +2,11 @@ from datetime import datetime, timedelta
 from jose import jwt, JWTError
 from passlib.context import CryptContext
 from fastapi import HTTPException, status
+import os
+from dotenv import load_dotenv
 
-SECRET_KEY = "super-secret-key"  # use env var in production
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
