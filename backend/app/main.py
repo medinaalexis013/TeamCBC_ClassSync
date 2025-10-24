@@ -1,16 +1,14 @@
-from fastapi import FastAPI, Depends
+# app/main.py
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.auth import routes as auth_routes
-from app.auth.models import Base
-from app.database import engine
-from app.auth.dependencies import get_current_user
 
-app = FastAPI(title="TeamCBC Backend API")
+from app.test_routes import router as test_router
+# (leave your other imports commented out while in migration mode)
 
-# Allow frontend access (CORS)
-origins = [
-    "http://localhost:3000"
-]
+app = FastAPI(title="TeamCBC Backend API (Supabase migration mode)")
+
+# Allow your frontend during dev; add more origins as needed
+origins = ["http://localhost:3000"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -20,24 +18,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Create tables when app starts
-@app.on_event("startup")
-def startup():
-    Base.metadata.create_all(bind=engine)
+# Mount test routes AFTER app is created
+app.include_router(test_router, prefix="/test", tags=["test"])
 
-# Include authentication routes
-app.include_router(auth_routes.router)
-
-# Example protected route
-@app.get("/protected")
-def protected_route(current_user=Depends(get_current_user)):
-    return {"message": f"Welcome, {current_user.email}! You have access."}
-
-# Root endpoint for health check
-@app.get("/")
-def root():
-    return {"message": "Hello from FastAPI!"}
+# Keep legacy bits disabled during migration
+# from app.auth.models import Base
+# from app.database import engine
+# @app.on_event("startup")
+# def startup():
+#     Base.metadata.create_all(bind=engine)
+# from app.auth import routes as auth_routes
+# app.include_router(auth_routes.router)
 
 @app.get("/")
-def read_root():
-    return {"status": "ClassSync backend is running"}
+def health():
+    return {"ok": True, "mode": "supabase-migration"}
