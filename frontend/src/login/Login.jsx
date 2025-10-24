@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import React from 'react'
 import './Login.css'
 import { supabase } from '../lib/supabaseClient'
+import { useNavigate } from 'react-router-dom'
 
 const email_regex = /^[a-zA-Z0-9]+([._-][0-9a-zA-Z]+)*@[a-zA-Z0-9]+([.-][0-9a-zA-Z]+)*\.[a-zA-Z]{2,}$/
 
@@ -10,6 +11,7 @@ function validate_email(value) {
 }
 
 export default function Login(props) {
+    const navigate = useNavigate()
     const [emailInputValue, setEmailInputValue] = useState('')
     const [errorMsg, setErrorMsg] = useState('')
     const [showPassword, setShowPassword] = useState(false)
@@ -44,6 +46,9 @@ export default function Login(props) {
     if (error) {
         setErrorMsg(error.message || 'Login failed. Please try again.')
         return
+    } else {
+        console.log("Logged in as: ", data.user)
+        navigate('/home')
     }
     }
 
