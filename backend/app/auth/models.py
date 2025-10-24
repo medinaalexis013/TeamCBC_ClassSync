@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 
 Base = declarative_base()
 
-from sqlalchemy import Column, Integer, String, 
 
 
 class User(Base):
