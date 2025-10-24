@@ -65,3 +65,35 @@ def get_profile(Authorization: str = Header(...)):
         return {"user": user.user}
     except Exception as e:
         raise HTTPException(status_code=401, detail=str(e))
+
+# -----------------------------
+# FORGOT PASSWORD
+# -----------------------------
+@router.post("/forgot-password")
+def forgot_password(email: str = Body(..., embed=True)):
+    """
+    Initiates a password reset email via Supabase Auth.
+    Supabase automatically emails the user with a reset link.
+    """
+    try:
+        response = supabase.auth.reset_password_for_email(email, options={
+            "redirect_to": "http://localhost:3000/reset-password"
+        })
+        return {"message": f"Password reset link sent to {email}."}
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+
+
+@router.post("/reset-password")
+def reset_password(new_password: str = Body(..., embed=True), access_token: str = Body(..., embed=True)):
+    """
+    Updates the user's password using Supabase session token.
+    """
+    try:
+        response = supabase.auth.update_user(
+            {"password": new_password},
+            access_token=access_token
+        )
+        return {"message": "Password has been reset successfully."}
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
