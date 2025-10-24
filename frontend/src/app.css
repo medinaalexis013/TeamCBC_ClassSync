@@ -1,9 +1,10 @@
 @scope (#main-case) {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     background: linear-gradient(180deg, rgba(141, 184, 103, 1) 0%, rgba(82, 182, 94, 1) 100%);
     font-family: Inter;
+    min-height: 100vh;
 }
 
 .back-arrow {
@@ -15,3 +16,15 @@
 body {
         margin: 0;
     }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+:root {
+    display: flex;
+    justify-content: center;
+}

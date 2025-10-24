@@ -83,12 +83,12 @@ export default function Login(props) {
                 </div>
 
                 <div style={{display: "flex", justifyContent: "center", paddingTop: "40px"}}>
-                    <button onClick={validate_email} className='login-button'>Log In</button>
+                    <button onClick={handleSubmit} className='login-button'>Log In</button>
                 </div>
 
                 <div style={{display: "flex", justifyContent: "center", paddingTop: "100px"}}>
                     <span>Don't have an account? </span>
-                    <a style={{marginLeft: "20px"}} href=''>Sign Up</a>
+                    <a style={{marginLeft: "20px"}} href='/sign-up'>Sign Up</a>
                 </div>
             </form>
 		</div>
