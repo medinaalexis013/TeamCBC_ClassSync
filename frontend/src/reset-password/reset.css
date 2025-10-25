@@ -1,0 +1,125 @@
+@scope (#reset-page-case) {
+    :scope {
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.8em;
+      height: 100vh;
+      width: 100%;
+      max-width: 500px;
+    }
+  
+    .form {
+      width: 90%;
+    }
+  
+    .signup-box {
+      background-color: #d9d9d9;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      margin-top: 25px;
+      border-radius: 5px;
+    }
+  
+    .label {
+      margin-bottom: 10px;
+      margin-top: 5px;
+    }
+  
+    #password-case {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0;
+    }
+  
+    input {
+      all: unset;
+    }
+  
+    input::placeholder {
+      opacity: 0.8;
+      font-style: italic;
+    }
+  
+    .lock {
+      vertical-align: middle;
+    }
+  
+    .show-password-button,
+    .show-confirm-button {
+      position: relative;
+      right: 10px;
+      cursor: pointer;
+    }
+  
+    .password-tip {
+      all: unset;
+      font-size: 0.9em;
+      opacity: 0.5;
+      margin-top: -15px;
+    }
+  
+    .line {
+      width: 95%;
+      border-bottom: 1px solid black;
+      z-index: 0;
+    }
+  
+    .error-message {
+      color: red;
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+    }
+  
+    .info-message {
+      color: green;
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+    }
+  
+    .criteria {
+      list-style: none;
+      margin: 12px 0 0;
+      padding: 0;
+      opacity: 0.8;
+    }
+    .criteria li {
+      margin: 4px 0;
+    }
+    .criteria li.valid {
+      color: #2e7d32;
+    } /* green-ish */
+  
+    .signup-button {
+      all: unset;
+      color: #ffffff;
+      background-color: #52b65e;
+      opacity: 70%;
+      border-radius: 45px;
+      width: 129px;
+      height: 35px;
+      text-align: center;
+      cursor: pointer;
+    }
+  
+    .signup-button[disabled] {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+  
+    @media (max-width: 500px) {
+      .reset-page-case {
+        display: flex;
+        flex-direction: column;
+        max-width: 500;
+      }
+    }
+  }
+  
