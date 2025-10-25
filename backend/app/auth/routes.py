@@ -1,62 +1,99 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
-from app.auth import utils, models, schemas
-from app.database import get_db
-from ..schemas import ChangePassword
-from ..dependencies import get_current_user
+from fastapi import APIRouter, HTTPException, Depends, Header
+from app.auth import utils, schemas
+from supabase import create_client, Client
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
-@router.post("/register", response_model=schemas.Token)
-def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    existing = db.query(models.User).filter(models.User.email == user.email).first()
-    if existing:
-        raise HTTPException(status_code=400, detail="Email already registered")
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-    hashed_pw = utils.hash_password(user.password)
-    
-    # Generate email verification token
-    token = secrets.token_urlsafe(32)
-    expiration = datetime.utcnow() + timedelta(hours=1)
+# -----------------------------
+# REGISTER USER
+# -----------------------------
+@router.post("/register")
+def register(user: schemas.UserCreate):
+    """
+    Registers a user with Supabase Auth.
+    Automatically sends email verification if enabled in Supabase settings.
+    """
+    try:
+        response = utils.register_user(user.email, user.password)
+        return {"message": "User registered successfully. Check your email for verification.", "user": response.user.email}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-    new_user = models.User(
-        email=user.email,
-        hashed_password=hashed_pw,
-        verification_token=token,
-        token_expiration=expiration,
-        is_verified=False
-    )
 
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
+# -----------------------------
+# LOGIN USER
+# -----------------------------
+@router.post("/login")
+def login(user: schemas.UserLogin):
+    """
+    Logs in user with Supabase and returns JWT + refresh tokens.
+    """
+    try:
+        response = utils.login_user(user.email, user.password)
+        session = response.session
+        return {
+            "access_token": session.access_token,
+            "refresh_token": session.refresh_token,
+            "token_type": "bearer"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=str(e))
 
-    return {"message": "User created. Please check your email to verify your account."}
 
-    token = utils.create_token({"sub": user.email})
-    return {"access_token": token, "token_type": "bearer"}
+# -----------------------------
+# CURRENT USER
+# -----------------------------
+@router.get("/me")
+def get_profile(Authorization: str = Header(...)):
+    """
+    Retrieves the currently authenticated user's profile using the Authorization header.
+    """
+    if not Authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Invalid Authorization header format")
 
-@router.post("/login", response_model=schemas.Token)
-def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.email == user.email).first()
-    if not utils.verify_password(request.current_password, user.hashed_password):
-        raise HTTPException(status_code=401, detail="Invalid credentials")
+    token = Authorization.split(" ")[1]
+    try:
+        user = utils.verify_token(token)
+        return {"user": user.user}
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=str(e))
 
-    token = utils.create_token({"sub": user.email}, timedelta(minutes=60))
-    return {"access_token": token, "token_type": "bearer"}
+# -----------------------------
+# FORGOT PASSWORD
+# -----------------------------
+@router.post("/forgot-password")
+def forgot_password(email: str = Body(..., embed=True)):
+    """
+    Initiates a password reset email via Supabase Auth.
+    Supabase automatically emails the user with a reset link.
+    """
+    try:
+        response = supabase.auth.reset_password_for_email(email, options={
+            "redirect_to": "http://localhost:3000/reset-password"
+        })
+        return {"message": f"Password reset link sent to {email}."}
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
-@router.put("/change-password")
-def change_password(request: ChangePassword, db: Session = Depends(database.get_db), current_user: models.User = Depends(get_current_user)):
-    user = db.query(models.User).filter(models.User.id == current_user.id).first()
 
-    # Verify old password
-    if not utils.verify(request.current_password, user.password):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Current password is incorrect."
+@router.post("/reset-password")
+def reset_password(new_password: str = Body(..., embed=True), access_token: str = Body(..., embed=True)):
+    """
+    Updates the user's password using Supabase session token.
+    """
+    try:
+        response = supabase.auth.update_user(
+            {"password": new_password},
+            access_token=access_token
         )
-
-    # Hash and set new password
-    user.hashed_password = utils.hash_password(request.new_password)
-    db.commit()
-    return {"message": "Password updated successfully"}
+        return {"message": "Password has been reset successfully."}
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))

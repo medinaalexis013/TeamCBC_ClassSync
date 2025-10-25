@@ -1,15 +1,17 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.auth import routes as auth_routes
-from app.auth.models import Base
-from app.database import engine
-from app.auth.dependencies import get_current_user
+from app.database import Base, engine
 
-app = FastAPI(title="TeamCBC Backend API")
+# Create tables in your Supabase Postgres if they don't exist
+Base.metadata.create_all(bind=engine)
 
-# Allow frontend access (CORS)
+app = FastAPI(title="ClassSync Backend API (Supabase)")
+
+# Allow your frontend (add more origins if needed)
 origins = [
-    "http://localhost:3000"
+    "http://localhost:3000",   # local React dev server
+    "https://your-frontend-domain.com"  # production domain (once deployed)
 ]
 
 app.add_middleware(
@@ -20,20 +22,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Create tables when app starts
-@app.on_event("startup")
-def startup():
-    Base.metadata.create_all(bind=engine)
-
-# Include authentication routes
+# Mount routes
 app.include_router(auth_routes.router)
 
-# Example protected route
-@app.get("/protected")
-def protected_route(current_user=Depends(get_current_user)):
-    return {"message": f"Welcome, {current_user.email}! You have access."}
-
-# Root endpoint for health check
 @app.get("/")
-def root():
-    return {"message": "Hello from FastAPI!"}
+def health_check():
+    return {"status": "ok", "service": "backend", "database": "supabase"}
